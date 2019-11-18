@@ -4,7 +4,7 @@ The demos in this guide uses a cross-cloud, GPU enabled Kubernetes cluster runni
 
 Here's the diagram for the infrastructure that is deployed:
 
-![](./images/sc19-azure-interconnect-demo.png.png)
+![](./images/sc19-azure-interconnect-demo.png)
 
 If you want to deploy the same cluster on your own after the event, you can follow the steps [in this guide](https://github.com/OguzPastirmaci/kubernetes-oci-azure-interconnect).
 
