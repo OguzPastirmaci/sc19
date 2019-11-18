@@ -232,9 +232,19 @@ spec:
 kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml
 ```
 
-2. Wait for about 10 seconds for the jobs to start. 
+**NOTE:** If you receive an error saying `Error from server (AlreadyExists): error when creating "https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml": mpijobs.kubeflow.org "tensorflow-benchmarks" already exists`, run `kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml` to delete the existing job and then run `kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml` again.1
+2. Check that the job is distributed to worker node on OCI and Azure. You should see that `tensorflow-benchmarks-worker-0` and `tensorflow-benchmarks-worker-1` are running on different worker nodes (`oci-k8s-worker` and `azure-k8s-worker`).
 
-Training will run for 100 steps and takes a few minutes on a GPU cluster. You can inspect the logs to see the training progress. When the job starts, access the logs from the launcher pod:
+```console
+$ kubectl get pods -n supercomputing19 -o wide
+
+NAME                                   READY   STATUS    RESTARTS   AGE    IP            NODE               NOMINATED NODE   READINESS GATES
+tensorflow-benchmarks-launcher-7528f   1/1     Running   0          2m4s   10.244.1.76   oci-k8s-worker     <none>           <none>
+tensorflow-benchmarks-worker-0         1/1     Running   0          2m4s   10.244.1.77   oci-k8s-worker     <none>           <none>
+tensorflow-benchmarks-worker-1         1/1     Running   0          2m4s   10.244.2.58   azure-k8s-worker   <none>           <none>
+```
+
+3. Training will run for 100 steps and takes several minutes to run on a GPU cluster. You can inspect the logs to see the training progress. When the job starts, access the logs from the launcher pod:
 
 ```console
 PODNAME=$(kubectl get pods -n supercomputing19 -l mpi_job_name=tensorflow-benchmarks,mpi_role_type=launcher -o name)
@@ -243,8 +253,6 @@ PODNAME=$(kubectl get pods -n supercomputing19 -l mpi_job_name=tensorflow-benchm
 ```console
 kubectl logs -n supercomputing19 -f ${PODNAME}
 ```
-
-**NOTE:** If you receive an error saying `Error from server (BadRequest): container "tensorflow-benchmarks" in pod "tensorflow-benchmarks-launcher-hd8b5" is waiting to start: PodInitializing`, wait for another 10 seconds and run `kubectl logs -n supercomputing19 -f ${PODNAME}` again.
 
 You should be seeing the logs. It will take several minutes for the job to complete. You can always `CTRL+C` to quit seeing the logs.
 
