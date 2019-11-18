@@ -12,7 +12,7 @@ If you want to deploy the same cluster on your own after the event, you can foll
 
 ![](./images/sc19-opsview.png)
 
-- You can also check the browser tab named [**Grafana**](http://132.145.154.251:30902/d/Q4B_KPJWk/nodes?orgId=1) to see GPU monitoring metrics.
+- You can also check the browser tab named [**Grafana**](http://132.145.154.251:30902/d/Q4B_KPJWk/nodes?orgId=1&refresh=1m&from=now-1h&to=now) to see GPU monitoring metrics.
 
 ![](./images/sc19-grafana.png)
 
