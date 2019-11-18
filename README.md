@@ -234,6 +234,7 @@ You should be seeing the logs. It will take several minutes for the job to compl
 
 ```console
 ...
+
 TensorFlow:  1.14
 Model:       resnet101
 Dataset:     imagenet (synthetic)
