@@ -9,8 +9,8 @@ Here's the diagram for the infrastructure that is deployed:
 | Cloud Provider | VM name            | VM shape (size) | Region            |
 | -------------- | ------------------ | --------------- | ----------------- |
 | OCI            | oci-k8s-master     | VM.Standard2.4  | US East (Ashburn) |
-| OCI            | oci-k8s-worker-1   | VM.GPU3.1       | US East (Ashburn) |
-| Azure          | azure-k8s-worker-1 | Standard NC6    | East US           |
+| OCI            | oci-k8s-worker     | VM.GPU3.1       | US East (Ashburn) |
+| Azure          | azure-k8s-worker   | Standard NC6    | East US           |
 
 If you want to deploy the same cluster on your own after the event, you can follow the steps [in this guide](https://github.com/OguzPastirmaci/kubernetes-oci-azure-interconnect).
 
