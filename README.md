@@ -26,7 +26,7 @@ If you want to deploy the same cluster on your own after the event, you can foll
 
 ## 1. Running `nvidia-smi` on Kubernetes worker nodes
 
-**IMPORTANT**: You should run all of the commands in this guide in the iTerm2 terminal in the Dock. It should already be logged in to the bastion instance and show `[opc@sc19 ~]$`. If not, simply SSH into the bastion using the following command:
+**IMPORTANT**: You should run all of the commands in this guide in a terminal screen. You can use the iTerm2 terminal that is already configured in the macOS Dock (taskbar). It should already be logged in to the bastion instance and show `[opc@sc19 ~]$`. If not, simply SSH into the bastion using the following command:
 
 ```console
 ssh opc@129.213.105.35
