@@ -232,7 +232,8 @@ spec:
 kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml
 ```
 
-**NOTE:** If you receive an error saying `Error from server (AlreadyExists): error when creating "https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml": mpijobs.kubeflow.org "tensorflow-benchmarks" already exists`, run `kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml` to delete the existing job and then run `kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml` again.1
+**NOTE:** If you receive an error saying `Error from server (AlreadyExists): error when creating "https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml": mpijobs.kubeflow.org "tensorflow-benchmarks" already exists`, run `kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml` to delete the existing job and then run `kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml` again.
+
 2. Check that the job is distributed to worker node on OCI and Azure. You should see that `tensorflow-benchmarks-worker-0` and `tensorflow-benchmarks-worker-1` are running on different worker nodes (`oci-k8s-worker` and `azure-k8s-worker`).
 
 ```console
