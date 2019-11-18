@@ -1,16 +1,29 @@
 # Demo: GPU enabled Kubernetes cluster running on Oracle Cloud Infrastructure and Microsoft Azure using the interconnect
 
-You can check the browser tab named [**Kubernetes Operational View**](http://132.145.154.251:31167/) to see the pods being created/deleted in the cluster.
+The demos in this guide uses a cross-cloud, GPU enabled Kubernetes cluster running on Oracle Cloud Infrastructure and Microsoft Azure using the interconnect that is already deployed.
+
+If you want to deploy the same cluster on your own after the event, you can follow the steps [in this guide](https://github.com/OguzPastirmaci/kubernetes-oci-azure-interconnect).
+
+- You can check the browser tab named [**Kubernetes Operational View**](http://132.145.154.251:31167/) to see the pods being created/deleted in the cluster.
 
 ![](./images/sc19-opsview.png)
 
-You can also check the browser tab named [**Grafana**](http://132.145.154.251:30902/d/Q4B_KPJWk/nodes?orgId=1) to see GPU monitoring metrics.
+- You can also check the browser tab named [**Grafana**](http://132.145.154.251:30902/d/Q4B_KPJWk/nodes?orgId=1) to see GPU monitoring metrics.
 
 ![](./images/sc19-grafana.png)
 
+
+**NOTE:** The user you have right to deploy to the `supercomputing19` namespace in the Kubernetes cluster. If you get an error message saying you are not authorized, check that you are doing an operation in the `supercomputing19` namespace.
+
 ## 1. Running `nvidia-smi` on Kubernetes worker nodes
 
-Let's start with running a very simple pod that shows the output of the `nvidia-smi` command in our Kubernetes cluster. 
+**IMPORTANT**: You should run all of the commands in this guide in the iTerm2 terminal in the Dock. It should already be logged in to the bastion instance and show `[opc@sc19 ~]$`. If not, simply SSH into the bastion using the following command:
+
+```console
+ssh opc@129.213.105.35
+```
+
+Let's start with running a very simple pod that shows the output of the `nvidia-smi` command in our Kubernetes cluster.
 
 ### Running `nvidia-smi` on OCI
 
@@ -73,7 +86,7 @@ Mon Nov 18 20:02:28 2019
 ## 2. Running a Tensorflow job
 In this step, we will run a simple MNIST classifier which displays summaries as a Tensorflow job. The job will run on a single node, so it is not distributed.
 
-Here's the yaml we will be running:
+Here's the configuration we will be running:
 
 ```yaml
 apiVersion: kubeflow.org/v1
@@ -143,6 +156,131 @@ kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPast
 
 ## 2. Running a Tensorflow job
 
-In this step, you will launch a multi-node TensorFlow MPI benchmark training job.
+In this step, you will launch a multi-node TensorFlow MPI benchmark training job. The job will start a launcher and then 2 workers, 1 on OCI and 1 on Azure.
+
+Here's the configuration we will be running:
+
+```yaml
+apiVersion: kubeflow.org/v1alpha2
+kind: MPIJob
+metadata:
+  name: tensorflow-benchmarks
+spec:
+  slotsPerWorker: 1
+  cleanPodPolicy: Running
+  mpiReplicaSpecs:
+    Launcher:
+      replicas: 1
+      template:
+         spec:
+           containers:
+           - image: mpioperator/tensorflow-benchmarks:latest
+             name: tensorflow-benchmarks
+             command:
+             - mpirun
+             - --allow-run-as-root
+             - -np
+             - "2"
+             - -bind-to
+             - none
+             - -map-by
+             - slot
+             - -x
+             - NCCL_DEBUG=INFO
+             - -x
+             - LD_LIBRARY_PATH
+             - -x
+             - PATH
+             - -mca
+             - pml
+             - ob1
+             - -mca
+             - btl
+             - ^openib
+             - python
+             - scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py
+             - --model=resnet101
+             - --batch_size=64
+             - --variable_update=horovod
+    Worker:
+      replicas: 2
+      template:
+        spec:
+          containers:
+          - image: mpioperator/tensorflow-benchmarks:latest
+            name: tensorflow-benchmarks
+            resources:
+              limits:
+                nvidia.com/gpu: 1
+```
+
+1. Run the following command to start the MPI job:
+
+```console
+kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml
+```
+
+2. Training will run for 100 steps and takes a few minutes on a GPU cluster. You can inspect the logs to see the training progress. When the job starts, access the logs from the launcher pod:
+
+```console
+PODNAME=$(kubectl get pods -n supercomputing19 -l mpi_job_name=tensorflow-benchmarks,mpi_role_type=launcher -o name)
+```
+
+```console
+kubectl logs -n supercomputing19 -f ${PODNAME}
+```
+
+You should be seeing the logs. It will take several minutes for the job to complete. You can always `CTRL+C` to quit seeing the logs.
+
+```console
+...
+TensorFlow:  1.14
+Model:       resnet101
+Dataset:     imagenet (synthetic)
+Mode:        training
+SingleSess:  False
+Batch size:  128 global
+             64 per device
+Num batches: 100
+Num epochs:  0.01
+Devices:     ['horovod/gpu:0', 'horovod/gpu:1']
+NUMA bind:   False
+Data format: NCHW
+Optimizer:   sgd
+Variables:   horovod
+
+...
+
+Step	Img/sec	total_loss
+1	images/sec: 11.8 +/- 0.0 (jitter = 0.0)	8.327
+1	images/sec: 11.8 +/- 0.0 (jitter = 0.0)	8.352
+10	images/sec: 11.1 +/- 0.2 (jitter = 0.3)	8.504
+10	images/sec: 11.1 +/- 0.2 (jitter = 0.3)	8.539
+20	images/sec: 11.1 +/- 0.1 (jitter = 0.5)	8.299
+20	images/sec: 11.1 +/- 0.1 (jitter = 0.5)	8.511
+30	images/sec: 11.0 +/- 0.1 (jitter = 0.4)	8.331
+30	images/sec: 11.0 +/- 0.1 (jitter = 0.4)	8.284
+40	images/sec: 10.9 +/- 0.1 (jitter = 0.4)	8.297
+40	images/sec: 10.9 +/- 0.1 (jitter = 0.4)	8.462
+50	images/sec: 10.9 +/- 0.1 (jitter = 0.3)	8.436
+50	images/sec: 10.9 +/- 0.1 (jitter = 0.3)	8.388
+60	images/sec: 10.9 +/- 0.1 (jitter = 0.3)	8.360
+60	images/sec: 10.9 +/- 0.1 (jitter = 0.4)	8.335
+70	images/sec: 11.0 +/- 0.1 (jitter = 0.3)	8.435
+70	images/sec: 11.0 +/- 0.1 (jitter = 0.3)	8.423
+80	images/sec: 11.1 +/- 0.1 (jitter = 0.5)	8.203
+80	images/sec: 11.1 +/- 0.1 (jitter = 0.4)	8.399
+90	images/sec: 11.2 +/- 0.1 (jitter = 0.5)	8.443
+90	images/sec: 11.2 +/- 0.1 (jitter = 0.5)	8.408
+100	images/sec: 11.3 +/- 0.1 (jitter = 0.8)	8.541
+----------------------------------------------------------------
+total images/sec: 22.64
+----------------------------------------------------------------
+100	images/sec: 11.3 +/- 0.1 (jitter = 0.7)	8.370
+----------------------------------------------------------------
+total images/sec: 22.64
+----------------------------------------------------------------
+```
+
 
 
