@@ -282,5 +282,9 @@ total images/sec: 22.64
 ----------------------------------------------------------------
 ```
 
+3. Delete the job with the following command:
 
+```console
+kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml
+```
 
