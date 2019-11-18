@@ -11,6 +11,7 @@ kubectl run oci-gpu-test --namespace supercomputing19 --rm -t -i --restart=Never
 ```
 You should see an output like below:
 
+```console
 Mon Nov 18 19:58:37 2019
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 435.21       Driver Version: 435.21       CUDA Version: 10.1     |
@@ -28,6 +29,7 @@ Mon Nov 18 19:58:37 2019
 |=============================================================================|
 |  No running processes found                                                 |
 +-----------------------------------------------------------------------------+
+```
 
 ### Running `nvidia-smi` on Azure
 
