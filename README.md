@@ -16,7 +16,7 @@ If you want to deploy the same cluster on your own after the event, you can foll
 
 ![](./images/sc19-grafana.png)
 
-# Demo instructions
+# Step-by-step demo instructions
 
 **NOTE:** The user you have right to deploy to the `supercomputing19` namespace in the Kubernetes cluster. If you get an error message saying you are not authorized, check that you are doing an operation in the `supercomputing19` namespace.
 
