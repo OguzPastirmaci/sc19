@@ -6,6 +6,12 @@ Here's the diagram for the infrastructure that is deployed:
 
 ![](./images/sc19-azure-interconnect-demo.png)
 
+| Cloud Provider | VM name            | VM shape (size) | Region            |
+| -------------- | ------------------ | --------------- | ----------------- |
+| OCI            | oci-k8s-master     | VM.Standard2.4  | US East (Ashburn) |
+| OCI            | oci-k8s-worker-1   | VM.GPU3.1       | US East (Ashburn) |
+| Azure          | azure-k8s-worker-1 | Standard NC6    | East US           |
+
 If you want to deploy the same cluster on your own after the event, you can follow the steps [in this guide](https://github.com/OguzPastirmaci/kubernetes-oci-azure-interconnect).
 
 - You can check the browser tab named [**Kubernetes Operational View**](http://132.145.154.251:31167/) to see the pods being created/deleted in the cluster.
