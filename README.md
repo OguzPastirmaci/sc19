@@ -34,10 +34,11 @@ ssh opc@129.213.105.35
 
 Let's start with running a very simple pod that shows the output of the `nvidia-smi` command in our Kubernetes cluster.
 
-### Running `nvidia-smi` on OCI
+The worker nodes in Kubernetes are already labeled depending on the cloud they are running (worker in OCI has the `cloud: oci` label, and worker in Azure has the `cloud: azure` label. As you will see in the commands we run, we will be selecting the nodes using this labels.
 
-The worker nodes in Kubernetes are already labeled depending on the cloud they are running (worker in OCI has the `cloud: oci` label, and worker in Azure has the `cloud: azure` label. As you can see from the command, we will be selecting the nodes using this labels. You can also run the same with a yaml file.
+### Running `nvidia-smi` in a pod that runs on OCI
 
+Run the following command to launch a pod that runs the `nvidia-smi` command:
 ```console
 kubectl run oci-gpu-test --namespace supercomputing19 --rm -t -i --restart=Never --image=nvidia/cuda:10.1-base --limits=nvidia.com/gpu=1 --overrides='{"apiVersion": "v1", "spec": {"nodeSelector": { "cloud": "oci" }}}' -- nvidia-smi
 ```
@@ -63,7 +64,7 @@ Mon Nov 18 19:58:37 2019
 +-----------------------------------------------------------------------------+
 ```
 
-### Running `nvidia-smi` on Azure
+### Running `nvidia-smi` in a pod that runs on Azure
 
 Now let's run the same command in Azure. This time we will select the node that has `cloud: azure` as the label:
 ```console
