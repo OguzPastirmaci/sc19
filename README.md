@@ -123,7 +123,7 @@ spec:
 kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml
 ```
 
-**NOTE:** If you receive an error message saying `Error from server (AlreadyExists): error when creating "https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml": tfjobs.kubeflow.org "tf-mnist" already exists`, run the following command to delete the existing job, and run the `kubectl create` command from the previous step again:
+**NOTE:** If you receive an error message starting with `Error from server (AlreadyExists)`, run the following command to delete the existing job, and run the `kubectl create` command from the previous step again:
 
 ```console
 kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml
@@ -232,9 +232,11 @@ spec:
 kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml
 ```
 
-**NOTE:** If you receive an error starting with `Error from server (AlreadyExists):`, run ```console kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml``` to delete the existing job.
+**NOTE:** If you receive an error starting with `Error from server (AlreadyExists):`, run the following command to delete the existing job, and run the `kubectl create` command from the previous step again:
 
-Then run the `kubectl create` command from the previous step again.
+```console
+kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml
+```
 
 ```console
 kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml
