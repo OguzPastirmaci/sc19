@@ -1,0 +1,18 @@
+apiVersion: kubeflow.org/v1
+kind: TFJob
+metadata:
+  name: tf-mnist
+spec:
+  CleanPodPolicy: All
+  tfReplicaSpecs:
+    MASTER:
+      replicas: 1
+      template:
+        spec:
+          containers:
+            - image: oguzpastirmaci/tf-mnist:gpu
+              name: tensorflow
+              resources:
+                limits:
+                  nvidia.com/gpu: 1
+          restartPolicy: OnFailure
