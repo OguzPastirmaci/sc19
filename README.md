@@ -162,7 +162,7 @@ Adding run metadata for 999
 kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml
 ```
 
-## 2. Running a distributred Tensorflow MPI job
+## 2. Running a distributed Tensorflow MPI job
 
 In this step, you will launch a multi-node TensorFlow MPI benchmark training job. The job will start a launcher and then 2 workers, 1 on OCI and 1 on Azure.
 
