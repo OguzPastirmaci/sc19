@@ -1,5 +1,13 @@
 # Demo: GPU enabled Kubernetes cluster running on Oracle Cloud Infrastructure and Microsoft Azure using the interconnect
 
+You can check the browser tab named [**Kubernetes Operational View**](http://132.145.154.251:31167/) to see the pods being created/deleted in the cluster.
+
+![](./images/sc19-opsview.png)
+
+You can also check the browser tab named [**Grafana**](http://132.145.154.251:30902/d/Q4B_KPJWk/nodes?orgId=1) to see GPU monitoring metrics.
+
+![](./images/sc19-grafana.png)
+
 ## 1. Running `nvidia-smi` on Kubernetes worker nodes
 
 Let's start with running a very simple pod that shows the output of the `nvidia-smi` command in our Kubernetes cluster. 
