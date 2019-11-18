@@ -90,36 +90,29 @@ spec:
 
 1. Let's run the Tensorflow job with the following command:
 ```console
-kubectl create -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml
+kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml
 ```
 
 **NOTE:** If you receive an error message saying `Error from server (AlreadyExists): error when creating "https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml": tfjobs.kubeflow.org "tf-mnist" already exists`, run the following command to delete the existing job, and rerun the previous command again:
 
 ```console
-kubectl delete -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml
+kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml
 ```
 
 2. Now run the following command to get the logs from the job:
 
 ```console
-kubectl logs tf-mnist-master-0 -f
+kubectl logs tf-mnist-master-0 -f -n supercomputing19
 ```
 
 You should be seeing the logs. It will take about a minute for the job to complete.
 
 ```console
 ...
-Adding run metadata for 799
-Accuracy at step 800: 0.965
-Accuracy at step 810: 0.9664
-Accuracy at step 820: 0.966
-Accuracy at step 830: 0.9672
-Accuracy at step 840: 0.9664
-Accuracy at step 850: 0.9667
-Accuracy at step 860: 0.9647
-Accuracy at step 870: 0.9633
-Accuracy at step 880: 0.9669
-Accuracy at step 890: 0.9646
+2019-11-18 20:40:19.436071: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2019-11-18 20:40:19.437862: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2019-11-18 20:40:19.439410: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+...
 Adding run metadata for 899
 Accuracy at step 900: 0.9655
 Accuracy at step 910: 0.965
@@ -132,5 +125,16 @@ Accuracy at step 970: 0.968
 Accuracy at step 980: 0.9683
 Accuracy at step 990: 0.969
 Adding run metadata for 999
+```
+
+3. After you check the logs, delete the job with the following command:
+
+```console
+kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml
+```
+
+## 2. Running a Tensorflow job
+
+In this step, you will launch a multi-node TensorFlow MPI benchmark training job.
 
 
