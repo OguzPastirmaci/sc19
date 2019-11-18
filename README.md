@@ -232,9 +232,9 @@ spec:
 kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml
 ```
 
-**NOTE:** If you receive an error saying `Error from server (AlreadyExists): error when creating "https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml": mpijobs.kubeflow.org "tensorflow-benchmarks" already exists`, run ```console kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml``` to delete the existing job.
+**NOTE:** If you receive an error starting with `Error from server (AlreadyExists):`, run ```console kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml``` to delete the existing job.
 
-The run the `kubectl create` command from the previous step again.
+Then run the `kubectl create` command from the previous step again.
 
 ```console
 kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml
