@@ -123,10 +123,14 @@ spec:
 kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml
 ```
 
-**NOTE:** If you receive an error message starting with `Error from server (AlreadyExists)`, run the following command to delete the existing job, and run the `kubectl create` command from the previous step again:
+**NOTE:** If you receive an error message starting with `Error from server (AlreadyExists):`, run the following command to delete the existing job, and run the `kubectl create` command from the previous step again:
 
 ```console
 kubectl delete -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml
+```
+
+```console
+kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tf-mnist.yaml
 ```
 
 2. Now run the following command to get the logs from the job:
