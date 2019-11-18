@@ -62,5 +62,8 @@ Mon Nov 18 20:02:28 2019
 +-----------------------------------------------------------------------------+
 ```
 
-## 2. Running a Tensorflow MPI job
+## 2. Running a Tensorflow job
+In this step, we will run a simple MNIST classifier which displays summaries as a Tensorflow job. The job will run on a single node, so it is not distributed.
+
+
 
