@@ -1,6 +1,8 @@
 # Demo: GPU enabled Kubernetes cluster running on Oracle Cloud Infrastructure and Microsoft Azure using the interconnect
 
-1. Let's start with running a very simple pod that shows the output of the `nvidia-smi` command in our Kubernetes cluster. 
+## 1. Running `nvidia-smi` on Kubernetes worker nodes
+
+Let's start with running a very simple pod that shows the output of the `nvidia-smi` command in our Kubernetes cluster. 
 
 ### Running `nvidia-smi` on OCI
 
@@ -59,3 +61,6 @@ Mon Nov 18 20:02:28 2019
 |  No running processes found                                                 |
 +-----------------------------------------------------------------------------+
 ```
+
+## 2. Running a Tensorflow MPI job
+
