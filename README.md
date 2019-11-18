@@ -9,7 +9,7 @@ The worker nodes in Kubernetes are already labeled depending on the cloud they a
 ```console
 kubectl run oci-gpu-test --namespace supercomputing19 --rm -t -i --restart=Never --image=nvidia/cuda:10.1-base --limits=nvidia.com/gpu=1 --overrides='{"apiVersion": "v1", "spec": {"nodeSelector": { "cloud": "oci" }}}' -- nvidia-smi
 ```
-You should see an output like below:
+You should see an output like below. Note that the VM on OCI has a **Nvidia Tesla V100** GPU.
 
 ```console
 Mon Nov 18 19:58:37 2019
@@ -38,7 +38,7 @@ Now let's run the same command in Azure. This time we will select the node that 
 kubectl run azure-gpu-test --namespace supercomputing19 --rm -t -i --restart=Never --image=nvidia/cuda:10.1-base --limits=nvidia.com/gpu=1 --overrides='{"apiVersion": "v1", "spec": {"nodeSelector": { "cloud": "azure" }}}' -- nvidia-smi
 ```
 
-You should see an output like below:
+You should see an output like below. Note that the VM on Azure has a **Nvidia Tesla K80** GPU.
 
 ```console
 Mon Nov 18 20:02:28 2019
