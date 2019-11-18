@@ -130,10 +130,13 @@ You should be seeing the logs. It will take about a minute for the job to comple
 
 ```console
 ...
+
 2019-11-18 20:40:19.436071: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
 2019-11-18 20:40:19.437862: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
 2019-11-18 20:40:19.439410: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+
 ...
+
 Adding run metadata for 899
 Accuracy at step 900: 0.9655
 Accuracy at step 910: 0.965
@@ -220,7 +223,9 @@ spec:
 kubectl create -n supercomputing19 -f https://raw.githubusercontent.com/OguzPastirmaci/sc19/master/examples/tensorflow-benchmarks.yaml
 ```
 
-2. Wait for about 10 seconds for the jobs to start. If you receive an error saying Training will run for 100 steps and takes a few minutes on a GPU cluster. You can inspect the logs to see the training progress. When the job starts, access the logs from the launcher pod:
+2. Wait for about 10 seconds for the jobs to start. 
+
+Training will run for 100 steps and takes a few minutes on a GPU cluster. You can inspect the logs to see the training progress. When the job starts, access the logs from the launcher pod:
 
 ```console
 PODNAME=$(kubectl get pods -n supercomputing19 -l mpi_job_name=tensorflow-benchmarks,mpi_role_type=launcher -o name)
@@ -229,6 +234,8 @@ PODNAME=$(kubectl get pods -n supercomputing19 -l mpi_job_name=tensorflow-benchm
 ```console
 kubectl logs -n supercomputing19 -f ${PODNAME}
 ```
+
+**NOTE:** If you receive an error saying `Error from server (BadRequest): container "tensorflow-benchmarks" in pod "tensorflow-benchmarks-launcher-hd8b5" is waiting to start: PodInitializing`, wait for another 10 seconds and run `kubectl logs -n supercomputing19 -f ${PODNAME}` again.
 
 You should be seeing the logs. It will take several minutes for the job to complete. You can always `CTRL+C` to quit seeing the logs.
 
