@@ -2,6 +2,10 @@
 
 The demos in this guide uses a cross-cloud, GPU enabled Kubernetes cluster running on Oracle Cloud Infrastructure and Microsoft Azure using the interconnect that is already deployed.
 
+Here's the diagram for the infrastructure that is deployed:
+
+![](./images/sc19-azure-interconnect-demo.png.png)
+
 If you want to deploy the same cluster on your own after the event, you can follow the steps [in this guide](https://github.com/OguzPastirmaci/kubernetes-oci-azure-interconnect).
 
 - You can check the browser tab named [**Kubernetes Operational View**](http://132.145.154.251:31167/) to see the pods being created/deleted in the cluster.
