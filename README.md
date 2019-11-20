@@ -44,6 +44,28 @@ The worker nodes in Kubernetes are already labeled depending on the cloud they a
 
 ### Running `nvidia-smi` in a pod that runs on OCI
 
+Here's the yaml:
+
+```yaml
+apiVersion: v1
+kind: Pod
+namespace: supercomputing19
+metadata:
+  name: oci-nvidia-smi
+spec:
+  restartPolicy: OnFailure
+  nodeSelector:
+    cloud: oci
+  containers:
+    - name: oci-nvidia-smi
+      image: nvidia/cuda:10.1-base
+      args:
+        - "nvidia-smi"
+      resources:
+        limits:
+          nvidia.com/gpu: 1
+```
+
 Run the following command to launch a pod that runs the `nvidia-smi` command:
 ```console
 kubectl run oci-gpu-test --namespace supercomputing19 --rm -t -i --restart=Never --image=nvidia/cuda:10.1-base --limits=nvidia.com/gpu=1 --overrides='{"apiVersion": "v1", "spec": {"nodeSelector": { "cloud": "oci" }}}' -- nvidia-smi
