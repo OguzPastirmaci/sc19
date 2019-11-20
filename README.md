@@ -44,7 +44,7 @@ The worker nodes in Kubernetes are already labeled depending on the cloud they a
 
 ### Running `nvidia-smi` in a pod that runs on OCI
 
-Here's the yaml:
+Here's the YAML:
 
 ```yaml
 apiVersion: v1
@@ -94,7 +94,30 @@ Mon Nov 18 19:58:37 2019
 
 ### Running `nvidia-smi` in a pod that runs on Azure
 
-Now let's run the same command in Azure. This time we will select the node that has `cloud: azure` as the label:
+Now let's run the same command in Azure. This time we will select the node that has `cloud: azure` as the label.
+
+Here's the YAML:
+
+```yaml
+apiVersion: v1
+kind: Pod
+namespace: supercomputing19
+metadata:
+  name: azure-nvidia-smi
+spec:
+  restartPolicy: OnFailure
+  nodeSelector:
+    cloud: azure
+  containers:
+    - name: azure-nvidia-smi
+      image: nvidia/cuda:10.1-base
+      args:
+        - "nvidia-smi"
+      resources:
+        limits:
+          nvidia.com/gpu: 1
+```
+
 ```console
 kubectl run azure-gpu-test --namespace supercomputing19 --rm -t -i --restart=Never --image=nvidia/cuda:10.1-base --limits=nvidia.com/gpu=1 --overrides='{"apiVersion": "v1", "spec": {"nodeSelector": { "cloud": "azure" }}}' -- nvidia-smi
 ```
